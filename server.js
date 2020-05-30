@@ -1,8 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const cors=require("cors");
 
-// Initializations
+// Initializationsrr
 const app = express();
 require("./database/database");
 app.use(require("./routes/index"));
@@ -16,13 +17,24 @@ const router = express.Router();
 //
 app.use(morgan("dev"));
 
+var corsOptions={
+  origin:"*",
+  opptionsSuccessStatus:200,
+
+}
+app.use(cors(corsOptions));
+
 router.use(function (req, res, next) {
   console.log("Getting in API");
+  res.header("Access-Control-Allow-Origin","*");
+
   next();
 });
 
 const indexRoute = require("./routes/index");
 app.use("/api", indexRoute);
+
+
 
 app.listen(PORT, () => {
   console.log("Port listening in " + PORT);
