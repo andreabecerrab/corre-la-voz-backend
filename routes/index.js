@@ -1,6 +1,32 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const Marcha = require("../models/Marcha");
+const multer = require("multer");
+
+const MIME_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/jpj": "jpg",
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP(file.mimetype);
+
+    let error = new Error("Invalid mime type");
+
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "/images");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLocaleLowerCase().split(" ").join("-");
+    const ext = MIME_TYPE_MAP(file.mimetype);
+
+    cb(null, name + "-" + Date.now() + "." + ext);
+  },
+});
 
 var router = express.Router();
 const marchass_controller = require("../controllers/marchas-controller");
@@ -12,7 +38,7 @@ router.get("/", function (req, res) {
 //add 400 responses
 router
   .route("/marchas")
-  .post(async (req, res) => {
+  .post(multer({ storage: storage }).single("img"), async (req, res) => {
     marchass_controller.addMarcha(req, res);
   })
   .get(async (req, res) => {

@@ -1,7 +1,4 @@
-const mongoose = require("mongoose");
-const Comentario = require("../models/Comentarios");
 const Marcha = require("../models/Marcha");
-const Usuario = require("../models/Usuarios");
 
 //add strike
 exports.addMarcha = async function (req, res) {
