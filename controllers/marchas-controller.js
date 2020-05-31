@@ -10,7 +10,7 @@ exports.addMarcha = async function (req, res) {
     nombre: req.body.nombre,
     fecha: req.body.fecha,
     hashtag: req.body.hashtag,
-    descripcion: req.body.descripcion,
+    descripcion: req.body.desc,
     direccion: req.body.direccion,
   });
 
@@ -50,22 +50,22 @@ exports.editSingleMarcha = async function (req, res, next) {
   try {
     marcha = await Marcha.findById(req.params.id);
 
-    if (req.body.nombre != "") {
+    if (req.body.nombre != "" && req.body != null) {
       marcha.nombre = req.body.nombre;
     }
-    if (req.body.hashtag != "") {
+    if (req.body.hashtag != "" && req.hashtag != null) {
       marcha.hashtag = req.body.hashtag;
     }
-    if (req.body.descripcion != "") {
-      marcha.descripcion = req.body.descripcion;
+    if (req.body.desc != "" && req.desc != null) {
+      marcha.descripcion = req.body.desc;
     }
-    if (req.body.direccion != "") {
+    if (req.body.direccion != "" && req.direccion != null) {
       marcha.direccion = req.body.direccion;
     }
-    if (req.body.img != "") {
+    if (req.body.img != "" && req.img != null) {
       marcha.img = req.body.img;
     }
-    if (req.body.fecha != "") {
+    if (req.body.fecha != "" && req.fecha != null) {
       marcha.fecha = req.body.fecha;
     }
 
