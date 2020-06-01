@@ -7,7 +7,7 @@ exports.addMarcha = async function (req, res) {
     nombre: req.body.nombre,
     fecha: req.body.fecha,
     hashtag: req.body.hashtag,
-    descripcion: req.body.descripcion,
+    descripcion: req.body.desc,
     direccion: req.body.direccion,
   });
 
@@ -47,24 +47,32 @@ exports.editSingleMarcha = async function (req, res, next) {
   try {
     marcha = await Marcha.findById(req.params.id);
 
-    if (req.body.nombre != "") {
-      marcha.nombre = req.body.nombre;
-    }
-    if (req.body.hashtag != "") {
-      marcha.hashtag = req.body.hashtag;
-    }
-    if (req.body.descripcion != "") {
-      marcha.descripcion = req.body.descripcion;
-    }
-    if (req.body.direccion != "") {
-      marcha.direccion = req.body.direccion;
-    }
-    if (req.body.img != "") {
-      marcha.img = req.body.img;
-    }
-    if (req.body.fecha != "") {
+    if (req.body.fecha != "" && req.body.fecha != null) {
       marcha.fecha = req.body.fecha;
+      console.log("entro tuna");
     }
+
+    if (req.body.nombre != "" && req.body.nombre != null) {
+      marcha.nombre = req.body.nombre;
+      console.log("entro nombre");
+    }
+    if (req.body.hashtag != "" && req.body.hashtag != null) {
+      marcha.hashtag = req.body.hashtag;
+      console.log("entro hastgag");
+    }
+    if (req.body.desc != "" && req.body.desc != null) {
+      marcha.descripcion = req.body.desc;
+      console.log("entro descricion");
+    }
+    if (req.body.direccion != "" && req.body.direccion != null) {
+      marcha.direccion = req.body.direccion;
+      console.log("entro drireccion");
+    }
+    if (req.body.img != "" && req.body.img != null) {
+      marcha.img = req.body.img;
+      console.log("entro imagen");
+    }
+    
 
     res.marcha = marcha;
     const updated = await res.marcha.save();
@@ -74,6 +82,7 @@ exports.editSingleMarcha = async function (req, res, next) {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
+  
 };
 
 //delete one strike
