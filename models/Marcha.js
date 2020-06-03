@@ -9,7 +9,7 @@ var MarchaSchema = new Schema({
   fecha: { type: String, required: true },
   hashtag: { type: String, required: true },
   descripcion: { type: String, required: true },
-  direccion: { type: String },
+  direccion: { type: JSON },
 
   //others
   comentarios: [Comentario],

@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
+const path = require("path");
 
 // Initializationsrr
 const app = express();
@@ -14,6 +15,9 @@ app.use(bodyParser.json());
 const PORT = process.env.PORT || 8081;
 const router = express.Router();
 
+//for imgs
+app.use("/images", express.static(path.join("./images")));
+app.use("/images/shared", express.static(path.join("./images/shared")));
 //
 app.use(morgan("dev"));
 
