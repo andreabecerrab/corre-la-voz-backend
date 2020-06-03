@@ -1,28 +1,40 @@
 const Marcha = require("../models/Marcha");
 const multer = require("multer");
-const geocode_controller = require("../controllers/geocode");
+const geocode = require("../controllers/geocode");
 
 //add strike
 exports.addMarcha = async function (req, res, next) {
   const url = req.protocol + "://" + req.get("host");
-
-  const marcha = new Marcha({
-    img: url + "/images/" + req.file.filename,
-    nombre: req.body.nombre,
-    fecha: req.body.fecha,
-    hashtag: req.body.hashtag,
-    descripcion: req.body.desc,
-    direccion: req.body.direccion,
-  });
-
-  try {
-    marcha.save().then((created) => {
-      res.json({ message: "Added" });
-    });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
+  geocode(
+    req.body.direccion,
+    (error, { latitude, longitude, location } = {}) => {
+      if (error) {
+        return error;
+      }
+      const marcha = new Marcha({
+        img: url + "/images/" + req.file.filename,
+        nombre: req.body.nombre,
+        fecha: req.body.fecha,
+        hashtag: req.body.hashtag,
+        descripcion: req.body.desc,
+        direccion: {
+          latitude: latitude,
+          longitude: longitude,
+          location: location,
+          address: req.body.direccion,
+        },
+      });
+      try {
+        marcha.save().then((created) => {
+          res.json({ message: "Added" });
+        });
+      } catch (err) {
+        res.status(400).json({ message: err.message });
+      }
+    }
+  );
 };
+
 //get all strikes
 exports.getMarchas = async function (req, res) {
   try {
@@ -149,3 +161,18 @@ exports.addMarker = async function (req, res) {
   //   res.status(500).json({ message: err.message });
   // }
 };
+async function getAddress(address) {
+  geocode(address, (error, { latitude, longitude, location } = {}) => {
+    if (error) {
+      return error;
+    }
+
+    console.log(latitude, longitude, location);
+    return {
+      latitude: latitude,
+      longitude: longitude,
+      location: location,
+      address: address,
+    };
+  });
+}
