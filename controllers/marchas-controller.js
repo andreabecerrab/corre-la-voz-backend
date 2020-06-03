@@ -12,18 +12,16 @@ exports.addMarcha = async function (req, res, next) {
     fecha: req.body.fecha,
     hashtag: req.body.hashtag,
     descripcion: req.body.desc,
-    direccion: geocode_controller.convert(req.body.direccion),
+    direccion: req.body.direccion,
   });
 
-  console.log(marcha.direccion);
-
-  // try {
-  //   marcha.save().then((created) => {
-  //     res.json({ message: "Added" });
-  //   });
-  // } catch (err) {
-  //   res.status(400).json({ message: err.message });
-  // }
+  try {
+    marcha.save().then((created) => {
+      res.json({ message: "Added" });
+    });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
 //get all strikes
 exports.getMarchas = async function (req, res) {
