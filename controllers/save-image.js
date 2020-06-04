@@ -30,7 +30,6 @@ exports.storage_shared = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    console.log("sera guardada");
     cb(error, "./images/shared");
   },
   filename: function (req, file, cb) {
