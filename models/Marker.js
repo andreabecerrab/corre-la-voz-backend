@@ -1,7 +1,7 @@
 var Marker = {
   title: String,
-  lat: Number,
-  lng: Number,
+  latitude: Number,
+  longitude: Number,
 };
 
 module.exports = Marker;

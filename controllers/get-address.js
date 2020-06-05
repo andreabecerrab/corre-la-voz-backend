@@ -5,7 +5,7 @@ exports.getData = async (address) => {
     const url =
       "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
       encodeAddress(address) +
-      ".json?access_token=pk.eyJ1IjoiYW5kcmVhYmVjZXJyYSIsImEiOiJjangzbnIzbDQwMGpwNDNteDV1MXk4ZGtjIn0.xw3oJVI694k3qG_Fjg_u-A&limit=1";
+      ".json?access_token=pk.eyJ1IjoiYW5kcmVhYmVjZXJyYWIiLCJhIjoiY2theXdqZG5qMDRpcjJ4cDhvMXowNnczMyJ9.xpaU9oNEgYxG1VE6PG6UKg";
 
     const response = await axios.get(url);
     const data = response.data.features[0];

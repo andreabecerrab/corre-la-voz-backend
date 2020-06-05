@@ -133,19 +133,21 @@ exports.addImage = async function (req, res) {
 };
 
 exports.addMarker = async function (req, res) {
-  // try {
-  //   marcha = await Marcha.findById(req.params.id);
-  //   const marker = {
-  //     title: req.body.title,
-  //     lat: req.body.lat,
-  //     lng: req.body.lng,
-  //   };
-  //   marcha.puntosLoc.push(marker);
-  //   res.marcha = marcha;
-  //   await res.marcha.save();
-  //   res.json({ message: "Marker added" });
-  //   //checar
-  // } catch (err) {
-  //   res.status(500).json({ message: err.message });
-  // }
+  console.log(req.body);
+  try {
+    marcha = await Marcha.findById(req.params.id);
+    const marker = {
+      title: req.body.title,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+    };
+
+    marcha.puntosLoc.push(marker);
+    res.marcha = marcha;
+    await res.marcha.save();
+    res.json({ message: "Marker added" });
+    //checar
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
