@@ -43,7 +43,7 @@ router
       marchass_controller.addImage(req, res);
     }
   );
-router.route("/add-marker/:id").get(async (req, res) => {
+router.route("/add-marker/:id").put(async (req, res) => {
   marchass_controller.addMarker(req, res);
 });
 

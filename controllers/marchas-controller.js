@@ -1,6 +1,6 @@
 const Marcha = require("../models/Marcha");
 const multer = require("multer");
-const geocode_controller = require("../controllers/geocode");
+const direccion_controller = require("../controllers/get-address");
 
 //add strike
 exports.addMarcha = async function (req, res, next) {
@@ -12,9 +12,8 @@ exports.addMarcha = async function (req, res, next) {
     fecha: req.body.fecha,
     hashtag: req.body.hashtag,
     descripcion: req.body.desc,
-    direccion: req.body.direccion,
+    direccion: await direccion_controller.getData(req.body.direccion),
   });
-
   try {
     marcha.save().then((created) => {
       res.json({ message: "Added" });
@@ -23,6 +22,7 @@ exports.addMarcha = async function (req, res, next) {
     res.status(400).json({ message: err.message });
   }
 };
+
 //get all strikes
 exports.getMarchas = async function (req, res) {
   try {
@@ -66,7 +66,7 @@ exports.editSingleMarcha = async function (req, res, next) {
       marcha.descripcion = req.body.desc;
     }
     if (req.body.direccion != "" && req.body.direccion != null) {
-      marcha.direccion = req.body.direccion;
+      marcha.direccion = await direccion_controller.getData(req.body.direccion);
     }
 
     res.marcha = marcha;
@@ -133,19 +133,21 @@ exports.addImage = async function (req, res) {
 };
 
 exports.addMarker = async function (req, res) {
-  // try {
-  //   marcha = await Marcha.findById(req.params.id);
-  //   const marker = {
-  //     title: req.body.title,
-  //     lat: req.body.lat,
-  //     lng: req.body.lng,
-  //   };
-  //   marcha.puntosLoc.push(marker);
-  //   res.marcha = marcha;
-  //   await res.marcha.save();
-  //   res.json({ message: "Marker added" });
-  //   //checar
-  // } catch (err) {
-  //   res.status(500).json({ message: err.message });
-  // }
+  console.log(req.body);
+  try {
+    marcha = await Marcha.findById(req.params.id);
+    const marker = {
+      title: req.body.title,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+    };
+
+    marcha.puntosLoc.push(marker);
+    res.marcha = marcha;
+    await res.marcha.save();
+    res.json({ message: "Marker added" });
+    //checar
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
