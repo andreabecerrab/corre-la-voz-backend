@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+const user_controller = require('./controllers/user-controller');
 
 // Auth0 config
 
@@ -54,7 +55,8 @@ app.use(cors(corsOptions));
 router.use(function (req, res, next) {
   console.log("Getting in API");
   res.header("Access-Control-Allow-Origin", "*");
-
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
   next();
 });
 
@@ -66,6 +68,11 @@ app.get("/api/external", checkJwt, (req, res) => {
   res.send({
     msg: "Your Access Token was successfully validated!"
   });
+});
+
+router.post('/usuario/inicio', checkJwt, (req, res, next) => {
+  console.log('pls wrk');
+  user_controller.addUsuario(req,res,next);
 });
 
 app.disable("etag");
