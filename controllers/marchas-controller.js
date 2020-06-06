@@ -19,7 +19,7 @@ exports.addMarcha = async function (req, res, next) {
       res.json({ message: "Added" });
     });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -75,7 +75,7 @@ exports.editSingleMarcha = async function (req, res, next) {
 
     //checar
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

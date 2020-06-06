@@ -7,6 +7,7 @@ const path = require("path");
 // Initializationsrr
 const app = express();
 require("./database/database");
+
 app.use(require("./routes/index"));
 
 //conf
