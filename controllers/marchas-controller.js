@@ -26,12 +26,27 @@ exports.addMarcha = async function (req, res, next) {
 //get all strikes
 exports.getMarchas = async function (req, res) {
   try {
-    const marchas = await Marcha.find();
-    res.status(200).json(marchas);
+    //pagination
+    const pageSize = +req.query.pagesize;
+    const currentPage = +req.query.page;
+    const postQuery = Marcha.find();
+    let marchas;
+    if (pageSize && currentPage) {
+      postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+    }
+    postQuery
+      .then((documents) => {
+        marchas = documents;
+        return Marcha.count();
+      })
+      .then((count) => {
+        res.status(200).json({ marchas: marchas, maxPosts: count });
+      });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
 //get one strike
 exports.getSingleMarcha = async function (req, res, next) {
   try {
