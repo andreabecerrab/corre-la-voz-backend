@@ -24,12 +24,24 @@ exports.addMarcha = async function (req, res) {
 //get all strikes
 exports.getMarchas = async function (req, res) {
   try {
-    const marchas = await Marcha.find();
+    const marchas = await Marcha.find(); 
     res.json(marchas);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+  
 };
+exports.getTotalMarchas = async function (req, res) {
+  try {
+    const total = await Marcha.estimatedDocumentCount(); 
+    res.json(total);
+    
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  
+};
+
 //get one strike
 exports.getSingleMarcha = async function (req, res, next) {
   try {
@@ -43,6 +55,7 @@ exports.getSingleMarcha = async function (req, res, next) {
   res.marcha = marcha;
   res.json(res.marcha);
   next();
+
 };
 
 //edit one strike

@@ -18,6 +18,12 @@ router
   .get(async (req, res) => {
     marchass_controller.getMarchas(req, res);
   });
+
+router.route("/total").get(async (req, res) => {
+    marchass_controller.getTotalMarchas(req, res);
+ });
+
+
 router.route("/marcha/:id").get(async (req, res, next) => {
   marchass_controller.getSingleMarcha(req, res, next);
 });
