@@ -148,7 +148,6 @@ exports.addImage = async function (req, res) {
 };
 
 exports.addMarker = async function (req, res) {
-  console.log(req.body);
   try {
     marcha = await Marcha.findById(req.params.id);
     const marker = {
