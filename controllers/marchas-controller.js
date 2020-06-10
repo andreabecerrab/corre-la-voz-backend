@@ -16,7 +16,7 @@ exports.addMarcha = async function (req, res, next) {
   });
   try {
     marcha.save().then((created) => {
-      res.json({ message: "Added" });
+      res.status(200).json({ message: "Added" });
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -27,7 +27,7 @@ exports.addMarcha = async function (req, res, next) {
 exports.getMarchas = async function (req, res) {
   try {
     const marchas = await Marcha.find();
-    res.json(marchas);
+    res.status(200).json(marchas);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -43,7 +43,7 @@ exports.getSingleMarcha = async function (req, res, next) {
     return res.status(500).json({ message: err.message });
   }
   res.marcha = marcha;
-  res.json(res.marcha);
+  res.status(200).json(res.marcha);
   next();
 };
 

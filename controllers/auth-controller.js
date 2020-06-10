@@ -5,6 +5,7 @@ const jwksRsa = require("jwks-rsa");
 const authConfig = {
   domain: "dev-hmnnmmhr.auth0.com",
   audience: "http://localhost:8081",
+  sso: false,
 };
 
 // Define middleware that validates incoming bearer tokens
