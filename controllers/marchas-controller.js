@@ -39,7 +39,7 @@ exports.getMarchas = async function (req, res) {
     postQuery
       .then((documents) => {
         marchas = documents;
-        return Marcha.count(); 
+        return Marcha.countDocuments(); 
       })
       .then((count) => {
         res.status(200).json({ marchas: marchas, maxPost: count });
