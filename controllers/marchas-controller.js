@@ -51,14 +51,14 @@ exports.getMarchas = async function (req, res) {
 };
 exports.getTotalMarchas = async function (req, res) {
   try {
-    postQuery
-      .then((documents) => {
-        marchas = documents;
-        return Marcha.count(); 
-      })
-      .then((count) => {
-        res.status(200).json({ marchas: marchas, maxPosts: count });
-      });
+    
+        marchass =
+
+        marchass= await Marcha.count();
+       
+      
+        res.status(200).json(marchass);
+     
     
   } catch (err) {
     res.status(500).json({ message: err.message });
