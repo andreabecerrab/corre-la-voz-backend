@@ -1,31 +1,49 @@
-const mongoose = require("mongoose");
-const Comentario = require("../models/Comentarios");
 const Marcha = require("../models/Marcha");
-const Usuario = require("../models/Usuarios");
+const multer = require("multer");
+const direccion_controller = require("../controllers/get-address");
 
 //add strike
-exports.addMarcha = async function (req, res) {
+exports.addMarcha = async function (req, res, next) {
+  const url = req.protocol + "://" + req.get("host");
+
   const marcha = new Marcha({
-    img: req.body.img,
+    img: url + "/images/" + req.file.filename,
     nombre: req.body.nombre,
     fecha: req.body.fecha,
     hashtag: req.body.hashtag,
     descripcion: req.body.desc,
-    direccion: req.body.direccion,
+    direccion: await direccion_controller.getData(req.body.direccion),
   });
-
   try {
-    const newMarcha = await marcha.save();
-    res.status(201).json(newMarcha);
+    marcha.save().then((created) => {
+      res.status(200).json({ message: "Added" });
+    });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
+
 //get all strikes
 exports.getMarchas = async function (req, res) {
   try {
-    const marchas = await Marcha.find(); 
-    res.json(marchas);
+    //pagination
+    const pageSize = +req.query.pagesize;
+    const currentPage = +req.query.page;
+    const postQuery = Marcha.find();
+    let marchas;
+    
+   
+    if (pageSize && currentPage) {
+      postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+    }
+    postQuery
+      .then((documents) => {
+        marchas = documents;
+        return Marcha.count(); 
+      })
+      .then((count) => {
+        res.status(200).json({ marchas: marchas, maxPost: count });
+      });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -33,8 +51,14 @@ exports.getMarchas = async function (req, res) {
 };
 exports.getTotalMarchas = async function (req, res) {
   try {
-    const total = await Marcha.estimatedDocumentCount(); 
-    res.json(total);
+    postQuery
+      .then((documents) => {
+        marchas = documents;
+        return Marcha.count(); 
+      })
+      .then((count) => {
+        res.status(200).json({ marchas: marchas, maxPosts: count });
+      });
     
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -53,7 +77,7 @@ exports.getSingleMarcha = async function (req, res, next) {
     return res.status(500).json({ message: err.message });
   }
   res.marcha = marcha;
-  res.json(res.marcha);
+  res.status(200).json(res.marcha);
   next();
 
 };
@@ -65,30 +89,20 @@ exports.editSingleMarcha = async function (req, res, next) {
 
     if (req.body.fecha != "" && req.body.fecha != null) {
       marcha.fecha = req.body.fecha;
-      console.log("entro tuna");
     }
 
     if (req.body.nombre != "" && req.body.nombre != null) {
       marcha.nombre = req.body.nombre;
-      console.log("entro nombre");
     }
     if (req.body.hashtag != "" && req.body.hashtag != null) {
       marcha.hashtag = req.body.hashtag;
-      console.log("entro hastgag");
     }
     if (req.body.desc != "" && req.body.desc != null) {
       marcha.descripcion = req.body.desc;
-      console.log("entro descricion");
     }
     if (req.body.direccion != "" && req.body.direccion != null) {
-      marcha.direccion = req.body.direccion;
-      console.log("entro drireccion");
+      marcha.direccion = await direccion_controller.getData(req.body.direccion);
     }
-    if (req.body.img != "" && req.body.img != null) {
-      marcha.img = req.body.img;
-      console.log("entro imagen");
-    }
-    
 
     res.marcha = marcha;
     const updated = await res.marcha.save();
@@ -96,9 +110,8 @@ exports.editSingleMarcha = async function (req, res, next) {
 
     //checar
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
-  
 };
 
 //delete one strike
@@ -140,7 +153,10 @@ exports.addImage = async function (req, res) {
   try {
     marcha = await Marcha.findById(req.params.id);
 
-    marcha.imgs.push(req.body.img);
+    const url = req.protocol + "://" + req.get("host");
+    const newimg = url + "/images/shared/" + req.file.filename;
+    marcha.imgs.push(newimg);
+
     res.marcha = marcha;
     await res.marcha.save();
 
@@ -154,17 +170,15 @@ exports.addImage = async function (req, res) {
 exports.addMarker = async function (req, res) {
   try {
     marcha = await Marcha.findById(req.params.id);
-
     const marker = {
       title: req.body.title,
-      lat: req.body.lat,
-      lng: req.body.lng,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
     };
 
     marcha.puntosLoc.push(marker);
     res.marcha = marcha;
     await res.marcha.save();
-
     res.json({ message: "Marker added" });
     //checar
   } catch (err) {
