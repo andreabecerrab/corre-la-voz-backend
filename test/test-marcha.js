@@ -29,7 +29,7 @@ describe('Marcha', () => {
 
     describe('#apiGetSingleMarcha', () => {
         it('Should return a single strike', (done) => {
-            let id = '5ee1b927efcc8e207031e2e2';
+            let id = '5ee44723f4967f9674a4646d';
             axios.get('http://localhost:8081/marcha/' + id)
                 .then((data) => {
                     assert.ok(data.status == 200)
