@@ -8,7 +8,7 @@ ng start
 localhost 8081
 ```
 
-##Testing 
+## Testing 
 ```
 npm test
 ```
