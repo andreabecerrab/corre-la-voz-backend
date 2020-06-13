@@ -4,7 +4,7 @@ Backend for corre-la-voz angular web application
 ## To run the application
 ```
 npm i
-ng start
+npm start
 localhost 8081
 ```
 
