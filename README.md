@@ -1,5 +1,5 @@
 # 💻 Backend (Corre la Voz)
-Backend for Corre la Voz angular web application, made with nodejs, express ad mondodb
+Backend for Corre la Voz angular web application, made with nodejs, express and mondodb
 
 ## To run the application
 ```
