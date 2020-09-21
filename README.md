@@ -1,5 +1,5 @@
-# corre-la-voz-backend 👋👋🏿👋🏽👋🏻👋🏾👋🏼
-Backend for corre-la-voz angular web application
+# 💻 Backend (Corre la Voz)
+Backend for Corre la Voz angular web application, made with nodejs, express ad mondodb
 
 ## To run the application
 ```
@@ -21,8 +21,3 @@ npm test
   </tr>
 </table>
 
-## Tec matricula
-
-andreabecerrab - Andrea Beatriz Becerra Bolaños - a01337434
-liaDiaz - Lia Citlali Díaz García - a01339760
-morenoloza98 - Alejandro Moreno Loza - A01654319
